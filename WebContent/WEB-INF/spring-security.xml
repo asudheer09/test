@@ -1,0 +1,28 @@
+<b:beans xmlns="http://www.springframework.org/schema/security"
+		 xmlns:b="http://www.springframework.org/schema/beans"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+	
+	<http auto-config="true" use-expressions="true">
+		<!-- Adds Support for basic authentication -->
+		<intercept-url pattern="/editApplicationDetails/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/newApplication/**" access="hasRole('ROLE_ADMIN')" /> 
+		<intercept-url pattern="/newServer/**" access="hasRole('ROLE_ADMIN')" /> 
+		<intercept-url pattern="/editServerDetails/**" access="hasRole('ROLE_ADMIN')" /> 
+		<intercept-url pattern="/serverView/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" /> 
+		<intercept-url pattern="/applicationView/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" /> 
+		<!-- <http-basic /> -->
+		<form-login login-page="/login" authentication-failure-url="/loginFailed" default-target-url="/applicationView" />
+		<logout />
+	</http>
+	
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="admin" password="admin" authorities="ROLE_ADMIN" />
+				<user name="guest" password="guest" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+</b:beans>
